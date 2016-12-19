@@ -1,18 +1,18 @@
 <?php   
      /* 
-     Plugin Name: Tweetily 
-     Plugin URI: http://winthecustomer.com/tweetily-tweet-wordpress-post-automatically/
-     Description: Tweetily will periodically tweet a random post or page automatically to promote your content and drive traffic to your Web site! You set the time, number of tweets, and just let Tweetily do the rest! For questions, comments, or feature requests, contact me! <a href="http://winthecustomer.com/">http://winthecustomer.com</a>.
-     Author: Flavio Martins
-     Version: 4.1
-     Author URI: http://winthecustomer.com/
+     Plugin Name: Tweetapisek 
+     Plugin URI: http://flymetothemoon.tk/tweetapisek-tweet-your-posts-from-wordpress/
+     Description: Tweetily will periodically tweet a random post or page automatically to promote your content and drive traffic to your Web site! You set the time, number of tweets, and just let Tweetapisek do the rest! For questions, comments, or feature requests, contact me! <a href="http://flymetothemoon.tk/">http://flymetothemoon.tk</a>.
+     Author: Theeravat Suensilpong
+     Version: 0.1
+     Author URI: http://flymetothemoon.tk/
     */  
 
 
 register_activation_hook( __FILE__, 'as_tw_install' );
 
 function as_tw_install() {
-	$admin_url = site_url('/wp-admin/admin.php?page=Tweetily');
+	$admin_url = site_url('/wp-admin/admin.php?page=Tweetapisek');
 	add_option( 'as_number_tweet', '1', '', 'yes' ); 
 	add_option( 'as_post_type', 'Post', '', 'yes' ); 
 	add_option( 'next_tweet_time', '0', '', 'yes' ); 
@@ -50,15 +50,15 @@ define('top_opt_ADD_DATA',"false");
 define('top_opt_URL_SHORTENER',"is.gd");
 define('top_opt_HASHTAGS',"");
 
-$admin_url = site_url('/wp-admin/admin.php?page=Tweetily');
+$admin_url = site_url('/wp-admin/admin.php?page=Tweetapisek');
 define('top_opt_admin_url',$admin_url);
 
 global $top_db_version;
 $top_db_version = "1.0";
 
    function top_admin_actions() {  
-        add_menu_page("Tweetily", "Tweetily", 1, "Tweetily", "top_admin");
-        add_submenu_page("Tweetily", __('Exclude Posts','Tweetily'), __('Exclude Posts','Tweetily'), 1, __('ExcludePosts','Tweetily'), 'top_exclude');
+        add_menu_page("Tweetapisek", "Tweetapisek", 1, "Tweetapisek", "top_admin");
+        add_submenu_page("Tweetapisek", __('Exclude Posts','Tweetapisek'), __('Exclude Posts','Tweetapisek'), 1, __('ExcludePosts','Tweetapisek'), 'top_exclude');
 		
     }  
     
@@ -73,10 +73,7 @@ $top_db_version = "1.0";
         
             if ( isset( $_REQUEST['oauth_token'] ) ) {
 			    $auth_url= str_replace('oauth_token', 'oauth_token1', top_currentPageURL());
-				$top_url = get_option('top_opt_admin_url') . substr($auth_url,strrpos($auth_url, "page=Tweetily") + strlen("page=Tweetily"));
-                /*echo '<script language="javascript">window.open ("'.$top_url.'","_self")</script>';
-                
-                die;*/
+				$top_url = get_option('top_opt_admin_url') . substr($auth_url,strrpos($auth_url, "page=Tweetapisek") + strlen("page=Tweetapisek"));
             }
         
         }
@@ -94,7 +91,7 @@ function top_plugin_action_links($links, $file) {
         // The "page" query string value must be equal to the slug
         // of the Settings admin page we defined earlier, which in
         // this case equals "myplugin-settings".
-        $settings_link = '<a href="' . get_bloginfo('wpurl') . '/wp-admin/admin.php?page=Tweetily">Settings</a>';
+        $settings_link = '<a href="' . get_bloginfo('wpurl') . '/wp-admin/admin.php?page=Tweetapisek">Settings</a>';
         array_unshift($links, $settings_link);
     }
 
