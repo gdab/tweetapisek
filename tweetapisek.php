@@ -44,18 +44,12 @@ function twtps_init() {
 	}
 	return;
 	$admin_url = site_url('/wp-admin/admin.php?page=Tweetapisek');
-	add_option( 'as_number_tweet', '1', '', 'yes' ); 
-	add_option( 'as_post_type', 'Post', '', 'yes' ); 
-	add_option( 'next_tweet_time', '0', '', 'yes' ); 
 	//update_option( 'top_opt_admin_url', $admin_url, '', 'yes' );
 }
 
 
 function tweetapisek_admin_actions() {  
 	global $admin_url;
-	add_options_page("Tweetapisek", "Tweetapisek", "manage_options", "tweetapisek", "top_admin");
-	$admin_url = menu_page_url('tweetapisek',false);
-	update_option( 'top_opt_admin_url', $admin_url, '', 'yes' );
 }  
 // 2016-12-19 TODO: make exclude posts to tab setting page
     
