@@ -5,18 +5,18 @@ global $top_oauth;
 $top_oauth = new TOPOAuth;
 
 if ( function_exists('w3tc_pgcache_flush') ) {
-w3tc_pgcache_flush();
-w3tc_dbcache_flush();
-w3tc_minify_flush();
-w3tc_objectcache_flush();
-$cache = ' and W3TC Caches cleared';
+	w3tc_pgcache_flush();
+	w3tc_dbcache_flush();
+	w3tc_minify_flush();
+	w3tc_objectcache_flush();
+	$cache = ' and W3TC Caches cleared';
 }
 
 function top_tweet_old_post() {
 //check last tweet time against set interval and span
     if (top_opt_update_time()) {
-            update_option('top_opt_last_update', time());
-	    top_opt_tweet_old_post();
+		update_option('top_opt_last_update', time());
+		top_opt_tweet_old_post();
     }
 }
 
