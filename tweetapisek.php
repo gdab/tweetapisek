@@ -13,6 +13,11 @@ require_once('top-admin.php');
 require_once('top-core.php');
 require_once('top-excludepost.php');
 
+define('TWEETAPISEK_VERSION', '0.1');
+define('TWEETAPISEK_PATH',plugin_dir_path(__FILE__));
+
+$tweetapisek_plugin_url = plugin_dir_url(__FILE__);
+
 $admin_url = site_url('/wp-admin/admin.php?page=Tweetapisek');
 
 define('top_opt_admin_url',$admin_url);
@@ -63,7 +68,10 @@ function register_mysettings() {
 }
 
 function tweetapisek_admin_actions() {  
-	  add_options_page("Tweetapisek", "Tweetapisek", "manage_options", "tweetapisek", "top_admin");
+	global $admin_url;
+	add_options_page("Tweetapisek", "Tweetapisek", "manage_options", "tweetapisek", "top_admin");
+	$admin_url = menu_page_url('tweetapisek');
+	update_option( 'top_opt_admin_url', $admin_url, '', 'yes' );
 }  
 // 2016-12-19 TODO: make exclude posts to tab setting page
     
@@ -71,12 +79,13 @@ function tweetapisek_admin_actions() {
 function top_authorize(){
 	if ( isset( $_REQUEST['oauth_token'] ) ) {
 		$auth_url= str_replace('oauth_token', 'oauth_token1', top_currentPageURL());
-		$top_url = get_option('top_opt_admin_url') . substr($auth_url,strrpos($auth_url, "page=Tweetapisek") + strlen("page=Tweetapisek"));
+		$top_url = get_option('top_opt_admin_url') . substr($auth_url,strrpos($auth_url, "page=tweetapisek") + strlen("page=tweetapisek"));
 	}
 }
 
 function top_plugin_action_links($links, $file) {
     static $this_plugin;
+	 global $admin_url;
 
     if (!$this_plugin) {
         $this_plugin = plugin_basename(__FILE__);
@@ -86,7 +95,7 @@ function top_plugin_action_links($links, $file) {
         // The "page" query string value must be equal to the slug
         // of the Settings admin page we defined earlier, which in
         // this case equals "myplugin-settings".
-        $settings_link = '<a href="' . get_bloginfo('wpurl') . '/wp-admin/admin.php?page=Tweetapisek">Settings</a>';
+        $settings_link = '<a href="' .$admin_url .">Settings</a>';
         array_unshift($links, $settings_link);
     }
 
