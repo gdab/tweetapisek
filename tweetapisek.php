@@ -30,12 +30,12 @@ $top_db_version = "1.0";
 //register_activation_hook( __FILE__, 'twtps_init' );
 add_action('plugin_loaded','twtps_init');
 
-add_action('admin_menu', 'tweetapisek_admin_actions');  
+//add_action('admin_menu', 'tweetapisek_admin_actions');  
 add_action('admin_head', 'top_opt_head_admin');
 add_action('init','top_tweet_old_post');
 //add_action('admin_init','top_authorize',1);
 
-add_filter('plugin_action_links', 'top_plugin_action_links', 10, 2);
+add_filter('plugin_action_links', 'twtps_plugin_action_links', 10, 2);
 
 function twtps_init() {
 	load_plugin_textdomain( 'tweetapisek', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -43,25 +43,25 @@ function twtps_init() {
 		require_once("twtps-admin.php");
 	}
 	return;
-	$admin_url = site_url('/wp-admin/admin.php?page=Tweetapisek');
+	//$admin_url = site_url('/wp-admin/admin.php?page=Tweetapisek');
+	//add_option( 'as_number_tweet', '1', '', 'yes' ); 
+	//add_option( 'as_post_type', 'Post', '', 'yes' ); 
+	//add_option( 'next_tweet_time', '0', '', 'yes' ); 
+
 	//update_option( 'top_opt_admin_url', $admin_url, '', 'yes' );
 }
 
 
 function tweetapisek_admin_actions() {  
 	global $admin_url;
+	add_options_page("Tweetapisek", "Tweetapisek", "manage_options", "tweetapisek", "top_admin");
+	$admin_url = menu_page_url('tweetapisek',false);
+	update_option( 'top_opt_admin_url', $admin_url, '', 'yes' );
 }  
-// 2016-12-19 TODO: make exclude posts to tab setting page
     
         
-function top_authorize(){
-	if ( isset( $_REQUEST['oauth_token'] ) ) {
-		$auth_url= str_replace('oauth_token', 'oauth_token1', top_currentPageURL());
-		$top_url = get_option('top_opt_admin_url') . substr($auth_url,strrpos($auth_url, "page=tweetapisek") + strlen("page=tweetapisek"));
-	}
-}
 
-function top_plugin_action_links($links, $file) {
+function twtps_plugin_action_links($links, $file) {
     static $this_plugin;
 
     if (!$this_plugin) {

@@ -21,6 +21,9 @@ define('top_opt_URL_SHORTENER',"is.gd");
 define('top_opt_HASHTAGS',"");
 
 define('TWTPS_OPTIONS', 'twtps-options');
+define('TWTPS_OPTIONS_TWITTER_ACC', 'twitter-acc');
+define('TWTPS_OPTIONS_TWITTER_PROFILE_IMG_URL', 'twitter-profile-img-url');
+define('TWTPS_OPTIONS_TWITTER_OAUTH_ACCESS_TOKEN', 'twitter-oauth-access-token');
 
 define('TWTPS_OPTION_BASIC_TWEET_CONTENT','basic-tweet-content');
 
@@ -36,6 +39,7 @@ function twtps_reload_options() {
 	if(!is_array($twtps_defaultoptions)){
 		$twtps_defaultoptions = array();
 	}
-	//2016-12-20 TODO
+
+	return array_merge( $twtps_defaultoptions , $storedoptions);
 }
 ?>

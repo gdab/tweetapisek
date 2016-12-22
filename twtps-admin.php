@@ -1,10 +1,4 @@
 <?php
-require_once('tweetapisek.php');
-require_once('top-core.php');
-require_once( 'Include/top-oauth.php' );
-require_once('xml.php');
-require_once( 'Include/top-debug.php' );
-
 define('TWTPS_ADMINSLUG', 'twtps-setting');
 define('TWTPS_ADMIN_GROUP', 'twtps-admin-group');
 
@@ -41,10 +35,64 @@ $GLOBAL['twtps_basicfieldtexts'] = array(
 $GLOBAL['twtps_excludepostfieldtexts'] = array(
 );
 
+function twtps_admin_output_section( $args ){
+	echo '<span class="tabinfo">';
+
+	switch( $args['id'] ){
+		case TWTPS_ADMIN_GROUP_GENERAL:
+			_e('', 'tweetapisek');
+			break;
+
+		case TWTPS_ADMIN_GROUP_BASIC:
+			_e('Here, you can set to tweet.', 'tweetapisek');
+			break;
+
+		case TWTPS_ADMIN_GROUP_EXCLUDEPOST:
+			_e('This page shows all the post from your selected categories.<br> All the post excluded will not be tweeted even if the category is selected.  ', 'tweetapisek');
+			echo "<br>";
+			_e('<strong>Note:</strong> If you have made any change and dint hit "Exclude Selected" button changes will not be saved. Please hit "Exclude Selected" button after making any changes.', 'tweetapisek');
+			break;
+
+		case TWTPS_ADMIN_GROUP_CREDITS:
+			_e('Some info about the author of this plugin.', 'tweetapisek');
+			break;
+
+	}
+
+	echo '</span>';
+}
+
+function twtps_admin_output_field( $args ){
+	global $twtps_options;
+
+	switch( $args['label_for'] ){
+		case TWTPS_ADMIN_GROUP_TWITTER_LOGIN:
+			echo '[twitter login info.]'. $args['description'];
+			break;
+		case TWTPS_ADMIN_GROUP_TIMER:
+			echo 'timer';
+			break;
+		default:
+			//default
+	}
+}
+
 function twtps_sanitize_options($options){
 	global $wpdb;
 
-	//2016-12-20 TODO
+	$output = twtps_reload_options();
+
+	foreach($output as $optionname => $optionvalue){
+		if( isset( $options[$optionname] ) ) {
+			$newoptionvalue = $options[$optionname];
+		} else {
+			$newoptionvalue = '';
+		}
+
+		$output[$optionname] = $newoptionvalue;
+	}
+
+	return $output;
 }
 
 function twtps_admin_init() {
@@ -59,18 +107,23 @@ function twtps_admin_init() {
 	wp_enqueue_style( 'as-countdown-style' );
 
 	register_setting( TWTPS_ADMIN_GROUP, TWTPS_OPTIONS, "twtps_sanitize_options" );
-	add_option( 'as_number_tweet', '1', '', 'yes' );  //from old code
-	add_option( 'as_post_type', 'Post', '', 'yes' );  //from old code
-	add_option( 'next_tweet_time', '0', '', 'yes' );  //from old code
-	add_options_page("Tweetapisek", "Tweetapisek", "manage_options", "tweetapisek", "top_admin"); //from old code
-	$admin_url = menu_page_url('tweetapisek',false); //from old code
-	update_option( 'top_opt_admin_url', $admin_url, '', 'yes' ); //from old code
-	//2016-12-20 TODO
+
 }
-function top_admin() {
-    //check permission
-    if (current_user_can('manage_options')) 
-        {
+
+function twtps_add_admin_page(){
+	add_options_page(
+		__("Tweetapisek setting", 'tweetapisek'),
+		__("Tweetapisek", 'tweetapisek'),
+		"manage_options", 
+		TWTPS_ADMINSLUG, 
+		"twtps_show_admin_page"
+	);
+}
+
+function twtps_show_admin_page(){
+	global $twtps_plugin_url;
+
+//TODO 2016-12-22 revise admin page
         $message = null;
         $message_updated = __("Tweetily options have been updated!", 'Tweetily');
         $response = null;
@@ -926,28 +979,8 @@ $(function () {
 });
 </script>";
 
-    } else {
-        print('
-			<div id="message" class="updated fade">
-				<p>' . __('Oh no! Permission error, please contact your Web site administrator.', 'Tweetily') . '</p>
-			</div>');
-    }
 }
-
-function top_opt_optionselected($opValue, $value) {
-    if ($opValue == $value) {
-        return 'selected="selected"';
-    }
-    return '';
-}
-
-function top_opt_head_admin() {
-    $home = get_settings('siteurl');
-    $base = '/' . end(explode('/', str_replace(array('\\', '/top-admin.php'), array('/', ''), __FILE__)));
-    $stylesheet = $home . '/wp-content/plugins' . $base . '/css/tweet-old-post.css';
-    echo('<link rel="stylesheet" href="' . $stylesheet . '" type="text/css" media="screen" />');
-}
-
 
 add_action( 'admin_init', 'twtps_admin_init' );
+add_action( 'admin_menu', 'twtps_add_admin_page' );
 ?>

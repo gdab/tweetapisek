@@ -880,7 +880,7 @@ function top_opt_optionselected($opValue, $value) {
     return '';
 }
 
-function top_opt_head_admin() {
+function twtps_opt_head_admin() {
     $home = get_settings('siteurl');
     $base = '/' . end(explode('/', str_replace(array('\\', '/top-admin.php'), array('/', ''), __FILE__)));
     $stylesheet = $home . '/wp-content/plugins' . $base . '/css/tweet-old-post.css';
